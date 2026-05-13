@@ -1,4 +1,4 @@
-=<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -29,3 +29,146 @@
         white-space: nowrap;
         pointer-events: none;
         text-shadow: 0 0 8px #ff2b4a;
+        opacity: 0;
+        transition: opacity 0.6s ease-out;
+    }
+
+    .center-text {
+        position: absolute;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+        text-shadow: 0 0 12px white;
+    }
+
+    .floating {
+        position: absolute;
+        color: white;
+        font-size: 22px;
+        font-weight: bold;
+        text-shadow: 0 0 10px white;
+        transition: top 3.5s linear, opacity 1s ease-out;
+        pointer-events: none;
+    }
+</style>
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+<div class="center-text">Love you.</div>
+
+<script>
+// HEART ANIMATION
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+function heartFunction(t) {
+    const x = 16 * Math.sin(t) ** 3;
+    const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+    return { x, y };
+}
+
+function spawnText() {
+    const t = Math.random() * Math.PI * 2;
+    const h = heartFunction(t);
+
+    const x = canvas.width / 2 + h.x * 20;
+    const y = canvas.height / 2 - h.y * 20;
+
+    const el = document.createElement("div");
+    el.className = "text";
+    el.style.left = x + "px";
+    el.style.top = y + "px";
+    el.textContent = "i love you";
+
+    document.body.appendChild(el);
+
+    setTimeout(() => { el.style.opacity = "1"; }, 10);
+    setTimeout(() => { el.style.opacity = "0"; }, 2000);
+    setTimeout(() => { el.remove(); }, 3000);
+}
+
+setInterval(spawnText, 25);
+
+
+// FLOATING MESSAGES
+const floatingMessages = [
+    "I love your smile",
+    "I love your eyes",
+    "I love your personality",
+    "I love your kindness",
+    "I love your energy",
+    "I love your laugh",
+    "I love your voice",
+    "I love your hair",
+    "I love your height",
+    "I love your confidence",
+    "I love your creativity",
+    "I love your humour",
+    "I love the way you think",
+    "I love how caring you are",
+    "I love how supportive you are",
+    "I love how real you are",
+    "I love your style",
+    "I love your vibe",
+    "I love your presence",
+    "I love your warmth",
+    "I love your honesty",
+    "I love your strength",
+    "I love your passion",
+    "I love your intelligence",
+    "I love your goals",
+    "I love your determination",
+    "I love your patience",
+    "I love your loyalty",
+    "I love your uniqueness",
+    "I love your jokes",
+    "I love your ideas",
+    "I love your mindset",
+    "I love your energy around people",
+    "I love the way you make moments fun",
+    "I love the way you talk",
+    "I love the way you listen",
+    "I love the way you care",
+    "I love the way you treat others",
+    "I love the way you make things better",
+    "I love playing games with you",
+    "I love spending time with you",
+    "I love learning things with you",
+    "I love how you make me smile",
+    "I love how you brighten the room",
+    "I love how you stay true to yourself"
+];
+
+function spawnFloatingMessage() {
+    const msg = floatingMessages[Math.floor(Math.random() * floatingMessages.length)];
+
+    const el = document.createElement("div");
+    el.className = "floating";
+    el.textContent = msg;
+
+    el.style.left = Math.random() * window.innerWidth + "px";
+    el.style.top = "-40px";
+
+    document.body.appendChild(el);
+
+    setTimeout(() => {
+        el.style.top = window.innerHeight + "px";
+        el.style.opacity = "0";
+    }, 50);
+
+    setTimeout(() => { el.remove(); }, 4000);
+}
+
+setInterval(spawnFloatingMessage, 2000);
+</script>
+
+</body>
+</html>
