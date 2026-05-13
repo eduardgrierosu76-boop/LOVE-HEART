@@ -1,159 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>I Love You Heart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Animation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
 
-<style>
-    body {
-        margin: 0;
-        background: black;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-    }
-
-    .text {
-        position: absolute;
-        color: #ff2b4a;
-        font-size: 16px;
-        white-space: nowrap;
-        pointer-events: none;
-        text-shadow: 0 0 10px #ff2b4a;
-        opacity: 0;
-        transition: opacity 0.3s ease-out;
-    }
-
-    .floating {
-        position: absolute;
-        color: white;
-        font-size: 24px;
-        font-weight: bold;
-        text-shadow: 0 0 12px white;
-        transition: top 4s linear, opacity 1s ease-out;
-        pointer-events: none;
-    }
-</style>
+        canvas {
+            display: block;
+        }
+    </style>
 </head>
-
 <body>
-
-<script>
-// HEART MATH
-function heartFunction(t) {
-    const x = 16 * Math.sin(t) ** 3;
-    const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
-    return { x, y };
-}
-
-// CREATE TEXT
-function createText(x, y, content) {
-    const el = document.createElement("div");
-    el.className = "text";
-    el.style.left = x + "px";
-    el.style.top = y + "px";
-    el.textContent = content;
-
-    document.body.appendChild(el);
-
-    setTimeout(() => el.style.opacity = "1", 10);
-    setTimeout(() => el.style.opacity = "0", 1200);
-    setTimeout(() => el.remove(), 2000);
-}
-
-// HEART SPAM
-function spawnHeartText() {
-    const t = Math.random() * Math.PI * 2;
-    const h = heartFunction(t);
-
-    const scale = 25; // bigger heart, more visible
-    const x = window.innerWidth / 2 + h.x * scale;
-    const y = window.innerHeight / 2 - h.y * scale;
-
-    createText(x, y, "i love you");
-}
-
-// RANDOM SPAM
-function spawnRandomText() {
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * window.innerHeight;
-
-    createText(x, y, "i love you");
-}
-
-// COMPLIMENTS
-const floatingMessages = [
-    "I love your smile",
-    "I love your eyes",
-    "I love your personality",
-    "I love your kindness",
-    "I love your energy",
-    "I love your laugh",
-    "I love your voice",
-    "I love your hair",
-    "I love your height",
-    "I love your confidence",
-    "I love your creativity",
-    "I love your humour",
-    "I love the way you think",
-    "I love how caring you are",
-    "I love how supportive you are",
-    "I love how real you are",
-    "I love your style",
-    "I love your vibe",
-    "I love your presence",
-    "I love your warmth",
-    "I love your honesty",
-    "I love your strength",
-    "I love your passion",
-    "I love your intelligence",
-    "I love your goals",
-    "I love your determination",
-    "I love your patience",
-    "I love your loyalty",
-    "I love your uniqueness",
-    "I love your jokes",
-    "I love your ideas",
-    "I love your mindset",
-    "I love your energy around people",
-    "I love the way you make moments fun",
-    "I love the way you talk",
-    "I love the way you listen",
-    "I love the way you care",
-    "I love the way you treat others",
-    "I love the way you make things better",
-    "I love playing games with you",
-    "I love spending time with you",
-    "I love learning things with you",
-    "I love how you make me smile",
-    "I love how you brighten the room",
-    "I love how you stay true to yourself"
-];
-
-function spawnFloatingMessage() {
-    const msg = floatingMessages[Math.floor(Math.random() * floatingMessages.length)];
-
-    const el = document.createElement("div");
-    el.className = "floating";
-    el.textContent = msg;
-
-    el.style.left = Math.random() * window.innerWidth + "px";
-    el.style.top = "-50px";
-
-    document.body.appendChild(el);
-
-    setTimeout(() => {
-        el.style.top = window.innerHeight + "px";
-        el.style.opacity = "0";
-    }, 50);
-
-    setTimeout(() => el.remove(), 4500);
-}
-
-// INTERVALS
-setInterval(spawnHeartText, 12);   // dense heart
-setInterval(spawnRandomText, 18);  // random spam
-setInterval(spawnFloatingMessage, 2000); // compliments
-</script>
-
+    <canvas id="Canvas" width="840" height="680"></canvas>
+    <script src="script.js"></script>
 </body>
 </html>
