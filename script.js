@@ -31,7 +31,11 @@ function scatterInside(x, y, beta = 0.15) {
 
 // Shrink effect
 function calcPosition(x, y, ratio) {
-    const force = 1 / Math.pow((Math.pow((x - CANVAS_CENTER_X), 2) + Math.pow((y - CANVAS_CENTER_Y), 2)), 0.420);
+    const force = 1 / Math.pow(
+        (Math.pow((x - CANVAS_CENTER_X), 2) + Math.pow((y - CANVAS_CENTER_Y), 2)),
+        0.420
+    );
+
     const dx = ratio * force * (x - CANVAS_CENTER_X) + Math.floor(Math.random() * 3) - 1;
     const dy = ratio * force * (y - CANVAS_CENTER_Y) + Math.floor(Math.random() * 3) - 1;
 
@@ -54,7 +58,6 @@ class Heart {
         this.centerDiffusionPoints = new Set();
         this.allPoints = {};
         this.build(2000);
-        this.randomHalo = 1000;
         this.generateFrame = generateFrame;
 
         for (let frame = 0; frame < generateFrame; frame++) {
@@ -70,6 +73,7 @@ class Heart {
         }
 
         const pointList = Array.from(this.points);
+
         for (const { x: _x, y: _y } of pointList) {
             for (let i = 0; i < 3; i++) {
                 const { x, y } = scatterInside(_x, _y, 0.05);
@@ -86,25 +90,21 @@ class Heart {
 
     calc(frame) {
         const ratio = 15 * curve((frame / 10) * Math.PI);
-
         const allPoints = [];
 
         for (const { x, y } of this.points) {
             const { x: newX, y: newY } = calcPosition(x, y, ratio);
-            const size = Math.floor(Math.random() * 3) + 1;
-            allPoints.push({ x: newX, y: newY, size });
+            allPoints.push({ x: newX, y: newY });
         }
 
         for (const { x, y } of this.edgeDiffusionPoints) {
             const { x: newX, y: newY } = calcPosition(x, y, ratio);
-            const size = Math.floor(Math.random() * 2) + 1;
-            allPoints.push({ x: newX, y: newY, size });
+            allPoints.push({ x: newX, y: newY });
         }
 
         for (const { x, y } of this.centerDiffusionPoints) {
             const { x: newX, y: newY } = calcPosition(x, y, ratio);
-            const size = Math.floor(Math.random() * 2) + 1;
-            allPoints.push({ x: newX, y: newY, size });
+            allPoints.push({ x: newX, y: newY });
         }
 
         this.allPoints[frame] = allPoints;
@@ -112,9 +112,15 @@ class Heart {
 
     render(ctx, frame) {
         const points = this.allPoints[frame % this.generateFrame];
-        for (const { x, y, size } of points) {
-            ctx.fillStyle = HEART_COLOR;
-            ctx.fillRect(x, y, size, size);
+
+        ctx.fillStyle = HEART_COLOR;
+        ctx.font = "14px Arial";
+        ctx.textAlign = "center";
+        ctx.shadowColor = HEART_COLOR;
+        ctx.shadowBlur = 12;
+
+        for (const { x, y } of points) {
+            ctx.fillText("i love you", x, y);
         }
     }
 }
