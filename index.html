@@ -1,50 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>I Love You Heart</title>
-  <style>
+<meta charset="UTF-8">
+<title>I Love You Heart</title>
+
+<style>
     body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #000000;
-      color: #ff2b4a;
-      font-family: "Arial", sans-serif;
+        margin: 0;
+        background: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
     }
 
-    .heart-container {
-      text-align: center;
-      white-space: pre;
-      line-height: 1.1;
-      font-size: 12px;
+    #canvas {
+        position: absolute;
+        width: 100%;
+        height: 100%;
     }
 
-    .heart-container .center-text {
-      display: block;
-      color: #ffffff;
-      font-size: 26px;
-      font-weight: bold;
-      margin: 10px 0;
+    .text {
+        position: absolute;
+        color: #ff2b4a;
+        font-size: 14px;
+        white-space: nowrap;
+        pointer-events: none;
+        text-shadow: 0 0 8px #ff2b4a;
+        opacity: 0;
+        transition: opacity 0.6s ease-out;
     }
-  </style>
+
+    .center-text {
+        position: absolute;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+        text-shadow: 0 0 12px white;
+    }
+</style>
 </head>
+
 <body>
-  <div class="heart-container">
-i love you i love you i love you i love you i love you
-  i love you i love you i love you i love you i love you i love you
-    i love you i love you i... love you i love you
-              i love you
 
-            <span class="center-text">Love you.</span>
+<canvas id="canvas"></canvas>
+<div class="center-text">Love you.</div>
 
-              i love you
-            i love you i love you
-          i love you i love you i love you
-        i love you i love you i love you i love you
-      i lo... love you i love you i love you
-  </div>
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Heart math function
+function heartFunction(t) {
+    const x = 16 * Math.sin(t) ** 3;
+    const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+    return { x, y };
+}
+
+// Spawn text on the heart curve
+function spawnText() {
+    const t = Math.random() * Math.PI * 2;
+    const h = heartFunction(t);
+
+    const x = canvas.width / 2 + h.x * 20;
+    const y = canvas.height / 2 - h.y * 20;
+
+    const el = document.createElement("div");
+    el.className = "text";
+    el.style.left = x + "px";
+    el.style.top = y + "px";
+    el.textContent = "i love you";
+
+    document.body.appendChild(el);
+
+    // Fade in
+    setTimeout(() => {
+        el.style.opacity = "1";
+    }, 10);
+
+    // Fade out
+    setTimeout(() => {
+        el.style.opacity = "0";
+    }, 2000);
+
+    // Remove
+    setTimeout(() => {
+        el.remove();
+    }, 3000);
+}
+
+// Speed of spawning text
+setInterval(spawnText, 25);
+</script>
+
 </body>
 </html>
